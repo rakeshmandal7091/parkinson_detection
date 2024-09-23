@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mt-4">Profile</h1>
+
+    <!-- Profile Picture Preview Section -->
+    <div class="text-center mb-4">
+        {% if user.profile_pic %}
+            <img
+                src="{{ url_for('static', filename='uploads/' ~ user.profile_pic) }}"
+                alt="Profile Picture"
+                class="img-thumbnail rounded-circle"
+                style="width: 150px; height: 150px;"
+            />
+        {% else %}
+            <!-- User Badge for no profile picture -->
+            <div class="badge badge-secondary" style="font-size: 100px; width: 150px; height: 150px; line-height: 150px; border-radius: 50%; text-align: center; vertical-align: middle;">
+                👤
+            </div>
+        {% endif %}
+        
+        <!-- Edit Profile Picture Option -->
+        <div class="mt-2">
+            {% if user.profile_pic %}
+                <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editProfilePicModal">
+                    Edit Profile Picture
+                </button>
+            {% else %}
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editProfilePicModal">
+                    Upload Profile Picture
+                </button>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Form Section -->
+    <form method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input
+                type="text"
+                class="form-control"
+                id="name"
+                name="name"
+                value="{{ user.name }}"
+                required
+            />
+        </div>
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input
+                type="email"
+                class="form-control"
+                id="email"
+                name="email"
+                value="{{ user.email }}"
+                required
+            />
+        </div>
+        <div class="form-group">
+            <label for="position">Position:</label>
+            <input
+                type="text"
+                class="form-control"
+                id="position"
+                name="position"
+                value="{{ user.position }}"
+                required
+            />
+        </div>
+        <div class="form-group">
+            <label for="qualification">Qualification:</label>
+            <input
+                type="text"
+                class="form-control"
+                id="qualification"
+                name="qualification"
+                value="{{ user.qualification }}"
+                required
+            />
+        </div>
+        <div class="form-group">
+            <label for="age">Age:</label>
+            <input
+                type="number"
+                class="form-control"
+                id="age"
+                name="age"
+                value="{{ user.age }}"
+                required
+            />
+        </div>
+        <div class="form-group">
+            <label for="profile_pic">Profile Picture:</label>
+            <input
+                type="file"
+                class="form-control-file"
+                id="profile_pic"
+                name="profile_pic"
+            />
+        </div>
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+    </form>
+</div>
+
+<!-- Modal for Profile Picture Upload -->
+<div class="modal fade" id="editProfilePicModal" tabindex="-1" role="dialog" aria-labelledby="editProfilePicModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editProfilePicModalLabel">Edit Profile Picture</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="profile_pic">Profile Picture:</label>
+                        <input
+                            type="file"
+                            class="form-control-file"
+                            id="profile_pic"
+                            name="profile_pic"
+                        />
+                    </div>
+                    <button type="submit" class="btn btn-primary">Upload</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

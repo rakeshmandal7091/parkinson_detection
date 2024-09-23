@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Doctor App</title>
+    <link
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        rel="stylesheet"
+    />
+
+    <style>
+        /* Navbar styles */
+        .navbar {
+            background-color: #4CAF50; /* Green color */
+        }
+        .navbar-brand,
+        .nav-link {
+            color: white !important;
+            font-weight: 500;
+        }
+        .navbar-nav .nav-item .nav-link:hover {
+            background-color: #388E3C; /* Darker green on hover */
+            border-radius: 5px;
+            transition: background-color 0.3s ease-in-out;
+        }
+        .nav-link.active {
+            background-color: #2E7D32;
+            border-radius: 5px;
+        }
+        /* Smooth transition for links */
+        .nav-link {
+            transition: background-color 0.3s, color 0.3s;
+        }
+        /* Body styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f9;
+        }
+        /* Container padding */
+        .container {
+            margin-top: 40px;
+        }
+        /* Profile badge styles */
+        .profile-badge {
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            object-fit: cover;
+            border: 2px solid white;
+        }
+        .profile-badge-placeholder {
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            line-height: 30px;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="{{ url_for('doctor_routes.home') }}">Doctor App</a>
+    <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+    >
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a
+                    class="nav-link {% if request.endpoint == 'doctor_routes.home' %}active{% endif %}"
+                    href="{{ url_for('doctor_routes.home') }}"
+                >Home</a>
+            </li>
+            {% if current_user.is_authenticated %}
+            <li class="nav-item">
+                <a
+                    class="nav-link {% if request.endpoint == 'doctor_routes.dashboard' %}active{% endif %}"
+                    href="{{ url_for('doctor_routes.dashboard') }}"
+                >Dashboard</a>
+            </li>
+            <li class="nav-item">
+                <a
+                    class="nav-link {% if request.endpoint == 'doctor_routes.profile' %}active{% endif %}"
+                    href="{{ url_for('doctor_routes.profile') }}"
+                >Profile</a>
+            </li>
+            <li class="nav-item">
+                <a
+                    class="nav-link {% if request.endpoint == 'doctor_routes.logout' %}active{% endif %}"
+                    href="{{ url_for('doctor_routes.logout') }}"
+                >Logout</a>
+            </li>
+            <li class="nav-item">
+                <a
+                    class="nav-link"
+                    href="{% if current_user.is_authenticated %}{{ url_for('doctor_routes.profile') }}{% else %}{{ url_for('doctor_routes.login') }}{% endif %}"
+                >
+                    {% if current_user.is_authenticated %}
+                        {% if current_user.profile_pic %}
+                            <img src="{{ url_for('static', filename='uploads/' ~ current_user.profile_pic) }}" class="profile-badge" alt="Profile Picture">
+                        {% else %}
+                            <span class="profile-badge-placeholder">👤</span>
+                        {% endif %}
+                    {% else %}
+                        <span class="profile-badge-placeholder">👤</span>
+                    {% endif %}
+                </a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+                <a
+                    class="nav-link {% if request.endpoint == 'doctor_routes.login' %}active{% endif %}"
+                    href="{{ url_for('doctor_routes.login') }}"
+                >Login</a>
+            </li>
+            <li class="nav-item">
+                <a
+                    class="nav-link {% if request.endpoint == 'doctor_routes.signup' %}active{% endif %}"
+                    href="{{ url_for('doctor_routes.signup') }}"
+                >Signup</a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>
+<div class="container mt-4">
+    {% block content %} {% endblock %}
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>

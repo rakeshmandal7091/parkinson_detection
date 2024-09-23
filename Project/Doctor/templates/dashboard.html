@@ -1,0 +1,155 @@
+{% extends "base.html" %} {% block content %}
+<div class="container-fluid">
+  <h1 class="mt-4 text-center">Doctor Dashboard</h1>
+
+  <!-- Section for Patient Data Notification -->
+  <div id="patient-notification" class="alert alert-info" style="display: none">
+    <strong>New Patient Data!</strong> Patient <span id="patient-name"></span> has sent new data.
+  </div>
+
+  <!-- Patient Data Section -->
+  <div id="patient-data" class="mb-4">
+    <h2>Patient Information</h2>
+    <!-- Data will be dynamically populated here -->
+  </div>
+
+  <!-- Parkinson's Disease Information -->
+  <div class="row mt-4">
+    <div class="col-lg-6">
+      <div class="card mb-4">
+        <img
+          src="{{ url_for('static', filename='images/symtoms.webp') }}"
+          class="card-img-top"
+          alt="Parkinson's Awareness"
+        />
+        <div class="card-body" style="background-color: #f8f9fa;">
+          <h5 class="card-title">What is Parkinson's Disease?</h5>
+          <p class="card-text">
+            Parkinson's disease is a progressive nervous system disorder that
+            affects movement. Symptoms start gradually, sometimes starting with
+            a barely noticeable tremor in just one hand.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="card mb-4">
+        <img
+          src="{{ url_for('static', filename='images/treatment.jpg') }}"
+          class="card-img-top"
+          alt="Parkinson's Treatment"
+        />
+        <div class="card-body" style="background-color: #e9ecef;">
+          <h5 class="card-title">Treatment Options</h5>
+          <p class="card-text">
+            Although Parkinson's disease can't be cured, medications can
+            significantly improve symptoms. In some cases, surgery may be
+            advised to regulate certain regions of your brain.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="card mb-4">
+        <img
+          src="{{ url_for('static', filename='images/symtoms2.jpg') }}"
+          class="card-img-top"
+          alt="Living with Parkinson's"
+        />
+        <div class="card-body" style="background-color: #f8f9fa;">
+          <h5 class="card-title">Living with Parkinson's</h5>
+          <p class="card-text">
+            Living with Parkinson's disease can be challenging. However, many
+            people with Parkinson's continue to live fulfilling lives with
+            proper care, lifestyle adjustments, and medical treatment.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="card mb-4">
+        <img
+          src="{{ url_for('static', filename='images/research.jpg') }}"
+          class="card-img-top"
+          alt="Parkinson's Research"
+        />
+        <div class="card-body" style="background-color: #e9ecef;">
+          <h5 class="card-title">Current Research</h5>
+          <p class="card-text">
+            Researchers are working to better understand the causes of
+            Parkinson's disease and develop new treatments to slow or halt its
+            progression.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Generate Report Section -->
+  <form
+    id="generate-report-form"
+    method="POST"
+    action="{{ url_for('doctor_routes.generate_report') }}"
+    class="mt-4"
+  >
+    <button type="submit" class="btn btn-success">Generate Report</button>
+  </form>
+
+  <!-- Success message and icon with Bootstrap styling for better visibility -->
+  <div class="success-message alert alert-success mt-4" style="display: none">
+    Report sent to patient successfully
+  </div>
+  <div class="success-icon text-success" style="display: none; font-size: 2rem">
+    &#10004;
+  </div>
+</div>
+{% endblock %}
+
+<script>
+  document
+    .getElementById("generate-report-form")
+    .addEventListener("submit", function (event) {
+      event.preventDefault(); // Prevent the form from submitting normally
+
+      fetch(this.action, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          // Add necessary payload if needed
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.status === "success") {
+            // Show the success message and icon
+            document.querySelector(".success-message").style.display = "block";
+            document.querySelector(".success-icon").style.display = "block";
+
+            // Hide them after 3 seconds
+            setTimeout(() => {
+              document.querySelector(".success-message").style.display = "none";
+              document.querySelector(".success-icon").style.display = "none";
+            }, 3000);
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    });
+
+  // Simulating patient data arrival
+  function showPatientNotification(patientName) {
+    document.getElementById("patient-name").textContent = patientName;
+    document.getElementById("patient-notification").style.display = "block";
+
+    setTimeout(() => {
+      document.getElementById("patient-notification").style.display = "none";
+    }, 5000); // Notification disappears after 5 seconds
+  }
+
+  // Example of how patient data notification could be triggered
+  // This would be replaced by an actual data reception mechanism
+  showPatientNotification("John Doe");
+</script>

@@ -1,0 +1,32 @@
+/* Custom Navbar Styles */
+.custom-navbar {
+    background-color: #e0f2f1; /* Light green background */
+  }
+  
+  .custom-navbar .navbar-brand {
+    color: #004d40; /* Darker green for text */
+  }
+  
+  .custom-navbar .navbar-nav .nav-link {
+    color: #004d40; /* Darker green for nav links */
+  }
+  
+  .custom-navbar .navbar-nav .nav-link:hover {
+    color: #00796b; /* Slightly lighter green on hover */
+  }
+  
+  .custom-navbar .navbar-toggler-icon {
+    background-color: #004d40; /* Darker green for toggler icon */
+  }
+  
+  @media (max-width: 767px) {
+    .custom-navbar {
+      background-color: #004d40; /* Darker green on small screens */
+    }
+  
+    .custom-navbar .navbar-brand,
+    .custom-navbar .navbar-nav .nav-link {
+      color: #ffffff; /* White text on small screens */
+    }
+  }
+  

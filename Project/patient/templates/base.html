@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}My Flask App{% endblock %}</title>
+  <link
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/base.css') }}"
+  />
+  <style>
+    .success-message {
+      display: none;
+      color: #28a745;
+      font-weight: bold;
+      font-size: 18px;
+      margin-top: 15px;
+    }
+    .success-icon {
+      color: #28a745;
+      font-size: 24px;
+      display: none;
+    }
+    .animation {
+      animation: bounceIn 1s;
+    }
+    @keyframes bounceIn {
+      0% {
+        opacity: 0;
+        transform: scale(0.5);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.05);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light custom-navbar">
+    <a class="navbar-brand" href="{{ url_for('patient_routes.home') }}">Parkinson</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbarNav"
+      aria-controls="navbarNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ml-auto">
+        <!-- Always visible options -->
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('patient_routes.home') }}">Home</a>
+        </li>
+
+        <!-- Options for unauthenticated users -->
+        {% if not current_user.is_authenticated %}
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('patient_routes.login') }}">Login</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('patient_routes.signup') }}">Signup</a>
+        </li>
+
+        <!-- Options for authenticated users -->
+        {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('patient_routes.predict') }}">Predict</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('patient_routes.dashboard') }}">Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('patient_routes.logout') }}">Logout</a>
+        </li>
+        {% endif %}
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container mt-4">{% block content %}{% endblock %}</div>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

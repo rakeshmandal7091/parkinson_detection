@@ -1,0 +1,100 @@
+{% extends "base.html" %} 
+{% block title %}Predict{% endblock %} 
+{% block content %}
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-lg-6">
+      <h1 class="mb-4">Predict</h1>
+      <p class="lead">Enter 22 values separated by spaces, commas, or any delimiter to predict the outcome.</p>
+
+      <!-- Input field for entering all values at once -->
+      <form id="split-form" method="POST" class="mb-4">
+        <div class="form-group">
+          <label for="combinedInput" class="form-label">Enter Values</label>
+          <input
+            type="text"
+            class="form-control"
+            id="combinedInput"
+            placeholder="Enter 22 values separated by spaces or commas"
+            required
+          />
+        </div>
+        <button type="button" class="btn btn-primary mt-3" id="split-button">
+          Split Values
+        </button>
+      </form>
+
+      <!-- Form for displaying the split values -->
+      <form
+        id="manual-form"
+        method="POST"
+        action="{{ url_for('patient_routes.send_data_to_doctor') }}"
+        style="display: none"
+      >
+        {% for i in range(1, 23) %}
+        <div class="form-group">
+          <label for="input{{ i }}">Input {{ i }}</label>
+          <input
+            type="text"
+            class="form-control mb-3"
+            id="input{{ i }}"
+            name="input{{ i }}"
+            required
+          />
+        </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-success mt-3">Submit</button>
+      </form>
+
+      <!-- Success message -->
+      <div class="alert alert-success success-message mt-3" role="alert" style="display: none;">
+        Data sent to the doctor
+      </div>
+    </div>
+
+    <!-- Images Section -->
+    <div class="col-lg-6">
+      <div class="image-gallery">
+        <div class="mb-4">
+          <img src="/static/images/4.jpeg" class="img-fluid rounded" alt="Prediction Image 1">
+          <p class="mt-2">This image represents the predictive model in action, helping doctors make accurate decisions.</p>
+        </div>
+        <div class="mb-4">
+          <img src="/static/images/5.jpeg" class="img-fluid rounded" alt="Prediction Image 2">
+          <p class="mt-2">By analyzing patient data, the system provides real-time predictions and alerts.</p>
+        </div>
+        <div class="mb-4">
+          <img src="/static/images/4.jpeg" class="img-fluid rounded" alt="Prediction Image 3">
+          <p class="mt-2">A neural network model powering accurate predictions for medical outcomes.</p>
+        </div>
+        <div>
+          <img src="/static/images/4.jpeg" class="img-fluid rounded" alt="Prediction Image 4">
+          <p class="mt-2">Visualization of patient data and predictions displayed to healthcare professionals.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.getElementById('split-button').addEventListener('click', function () {
+    const combinedInput = document.getElementById('combinedInput').value;
+    
+    // Split input by comma, space, or multiple spaces
+    const values = combinedInput.split(/[\s,]+/);
+
+    if (values.length !== 22) {
+      alert('Please enter exactly 22 values.');
+      return;
+    }
+
+    // Populate individual input fields
+    values.forEach((value, index) => {
+      document.getElementById(`input${index + 1}`).value = value;
+    });
+
+    // Show the form with the split values
+    document.getElementById('manual-form').style.display = 'block';
+  });
+</script>
+{% endblock %}
